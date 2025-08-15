@@ -1,2 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy 79th Independence Day, India 🇮🇳</title>
+  <style>
+    :root{
+      --saffron:#FF9933;/* deep saffron */
+      --white:#ffffff;
+      --green:#138808;/* india green */
+      --chakra:#0a5bd7;/* navy blue */
+      --bg:#06080f;
+      --glass: rgba(255,255,255,.08);
+      --glass-border: rgba(255,255,255,.15);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background: radial-gradient(1000px 600px at 10% -10%, rgba(255,153,51,.25), transparent 60%),
+                 radial-gradient(900px 500px at 110% 10%, rgba(19,136,8,.25), transparent 60%),
+                 linear-gradient(180deg, #0b1020, #06080f 40%, #04060c);
+      color:#f8fafc; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      overflow-x:hidden;
+    }
+    .wrap{
+      position:relative; min-height:100%; display:grid; place-items:center; padding: clamp(16px, 4vw, 32px);
+    }
+    /* Fireworks canvas behind everything */
+    #sky{position:fixed; inset:0; z-index:0; pointer-events:none;}
+
+    /* Header/Hero Card */
+    .card{
+      position:relative; z-index:2; width:min(1100px, 96vw);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid var(--glass-border);
+      border-radius:24px; padding: clamp(16px, 4vw, 28px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      overflow:hidden;
+      backdrop-filter: blur(8px);
+    }
+    .ribbons::before, .ribbons::after{
+      content:""; position:absolute; left:-10%; right:-10%; height:8px; filter:blur(.3px);
+      background:linear-gradient(90deg, var(--saffron), var(--white), var(--green));
+      box-shadow:0 0 30px rgba(255,255,255,.25);
+      animation: slide 10s linear infinite;
+    }
+    .ribbons::before{ top:0; }
+    .ribbons::after{ bottom:0; animation-duration: 12s; }
+    @keyframes slide{ from{transform:translateX(-10%)} to{transform:translateX(10%)} }
+
+    header{
+      display:grid; grid-template-columns: 1.15fr .85fr; gap: clamp(16px, 4vw, 32px);
+      align-items:center;
+    }
+    @media (max-width:900px){ header{grid-template-columns:1fr; text-align:center} }
+
+    .title{
+      line-height:1.05; margin:0;
+      font-weight:800; letter-spacing:-.02em;
+      font-size:clamp(28px, 6.4vw, 64px);
+    }
+    .title span.gradient{
+      background: linear-gradient(90deg, var(--saffron) 0% 33%, var(--white) 33% 66%, var(--green) 66%);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow: 0 0 18px rgba(255,255,255,.06);
+      display:inline-block;
+    }
+    .subtitle{opacity:.85; font-size:clamp(14px, 2.2vw, 18px); margin:.6rem 0 1.2rem}
+
+    /* Animated 79 badge */
+    .badge{display:flex; gap:16px; align-items:center; flex-wrap:wrap}
+    .num79{
+      font-size:clamp(52px, 12vw, 160px); font-weight:900; line-height:.85;
+      letter-spacing:-.03em; margin:0; position:relative;
+      color:transparent;
+      -webkit-text-stroke: 2px rgba(255,255,255,.9);
+    }
+    .num79::before{
+      content:"79"; position:absolute; inset:0;
+      background:conic-gradient(from 0deg, var(--saffron), var(--white), var(--green), var(--saffron));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      filter: drop-shadow(0 6px 18px rgba(255,255,255,.15));
+      animation: shimmer 6s linear infinite;
+    }
+    @keyframes shimmer{ to{ transform: rotate(1turn); } }
+
+    .cta{
+      display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:10px;
+    }
+    button.primary{
+      appearance:none; border:0; cursor:pointer; font-weight:700; letter-spacing:.2px;
+      padding:12px 16px; border-radius:999px; font-size:16px;
+      background:linear-gradient(135deg, var(--saffron), #ffb066);
+      color:#0b0f1a; box-shadow:0 10px 26px rgba(255,153,51,.35);
+      transition:transform .12s ease, box-shadow .2s ease;
+    }
+    button.primary:hover{ transform: translateY(-2px); box-shadow:0 16px 36px rgba(255,153,51,.42); }
+    button.ghost{
+      background:transparent; border:1px solid var(--glass-border); color:#e2e8f0; border-radius:999px; padding:12px 16px; font-weight:600; cursor:pointer;
+    }
+
+    /* Flag block */
+    .flag{
+      position:relative; height: clamp(180px, 34vw, 320px);
+      border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,.15);
+      box-shadow: inset 0 0 40px rgba(0,0,0,.35), 0 20px 60px rgba(0,0,0,.35);
+      background:linear-gradient(180deg, var(--saffron) 33.33%, var(--white) 33.33% 66.66%, var(--green) 66.66%);
+      transform: perspective(800px) rotateY(-8deg) rotateX(2deg);
+      animation: wave 4s ease-in-out infinite;
+    }
+    @keyframes wave{
+      0%,100%{ filter:brightness(1) drop-shadow(0 8px 16px rgba(0,0,0,.25)); }
+      50%{ filter:brightness(1.05) drop-shadow(0 18px 26px rgba(0,0,0,.35)); }
+    }
+    /* Subtle moving highlights to fake cloth waves */
+    .flag::before, .flag::after{
+      content:""; position:absolute; inset:0; mix-blend-mode:soft-light; pointer-events:none;
+    }
+    .flag::before{ background: repeating-linear-gradient( 100deg, rgba(255,255,255,.12) 0 4px, rgba(255,255,255,0) 4px 32px );
+                   animation: drift 10s linear infinite; opacity:.6 }
+    .flag::after { background: radial-gradient(120% 60% at -10% 40%, rgba(255,255,255,.25), transparent 60%),
+                               radial-gradient(120% 60% at 110% 60%, rgba(0,0,0,.25), transparent 60%);
+                   animation: sway 8s ease-in-out infinite; }
+    @keyframes drift{ to{ transform: translateX(120px);} }
+    @keyframes sway{ 50%{ transform: translateY(8px);} }
+
+    /* Chakra (24-spoke wheel) */
+    .chakra{
+      position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+      width: clamp(80px, 14vw, 140px); aspect-ratio:1/1;
+      filter: drop-shadow(0 6px 14px rgba(10,91,215,.35));
+      animation: spin 20s linear infinite;
+    }
+    @keyframes spin{ to{ transform: translate(-50%,-50%) rotate(1turn);} }
+
+    /* Floating kites */
+    .kite{ position:absolute; width:22px; height:22px; transform: rotate(45deg); border-radius:3px; opacity:.85 }
+    .kite::after{ content:""; position:absolute; width:2px; height:18px; background:rgba(255,255,255,.7); left:50%; top:100%; transform:translateX(-50%); }
+
+    /* Footer */
+    footer{margin-top:18px; opacity:.8; font-size:14px; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+    .dot.s{background:var(--saffron)} .dot.w{background:var(--white)} .dot.g{background:var(--green)}
+
+    /* Confetti overlay */
+    #confetti{ position:fixed; inset:0; pointer-events:none; z-index:3; }
+  </style>
+</head>
+<body>
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <div class="wrap">
+    <div class="card ribbons" role="region" aria-label="Independence Day celebration">
+      <header>
+        <div>
+          <h1 class="title">Happy <span class="gradient">79<sup>th</sup> Independence Day</span> 🇮🇳</h1>
+          <p class="subtitle">15 August 2025 • Saluting the spirit of freedom, unity, and progress.</p>
+          <div class="badge">
+            <h2 class="num79" aria-label="Seventy Nine">79</h2>
+            <div>
+              <p style="margin:0 0 8px; opacity:.9">“Jai Hind!” — celebrate with fireworks, confetti & a waving tricolour.</p>
+              <div class="cta">
+                <button class="primary" id="celebrateBtn">Celebrate Now</button>
+                <button class="ghost" id="toggleFireworks">Toggle Fireworks</button>
+                <button class="ghost" id="toggleConfetti">Toggle Confetti</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flag" aria-label="Indian Flag (Tricolour with Ashoka Chakra)">
+          <!-- Ashoka Chakra as SVG -->
+          <svg class="chakra" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="var(--chakra)" stroke-width="4"/>
+            <circle cx="50" cy="50" r="6" fill="var(--chakra)"/>
+            <!-- 24 spokes -->
+            <g stroke="var(--chakra)" stroke-width="3" stroke-linecap="round">
+              <!-- spokes generated by hand (12 lines mirrored) -->
+              <line x1="50" y1="50" x2="50" y2="6"/>
+              <line x1="50" y1="50" x2="76.5" y2="10.5"/>
+              <line x1="50" y1="50" x2="93.5" y2="27.5"/>
+              <line x1="50" y1="50" x2="99" y2="50"/>
+              <line x1="50" y1="50" x2="93.5" y2="72.5"/>
+              <line x1="50" y1="50" x2="76.5" y2="89.5"/>
+              <line x1="50" y1="50" x2="50" y2="94"/>
+              <line x1="50" y1="50" x2="23.5" y2="89.5"/>
+              <line x1="50" y1="50" x2="6.5" y2="72.5"/>
+              <line x1="50" y1="50" x2="1" y2="50"/>
+              <line x1="50" y1="50" x2="6.5" y2="27.5"/>
+              <line x1="50" y1="50" x2="23.5" y2="10.5"/>
+            </g>
+          </svg>
+        </div>
+      </header>
+
+      <footer>
+        <span class="dot s"></span><span class="dot w" style="outline:1px solid rgba(0,0,0,.25)"></span><span class="dot g"></span>
+        <span>Crafted for India’s 79<sup>th</sup> Independence Day. Share the joy and keep the Tricolour flying high!</span>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // ===== Utility =====
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+    // ===== Fireworks Canvas =====
+    const sky = document.getElementById('sky');
+    const sctx = sky.getContext('2d');
+    let fireworksEnabled = true;
+
+    function sizeSky(){ sky.width = innerWidth; sky.height = innerHeight; }
+    addEventListener('resize', sizeSky); sizeSky();
+
+    class Particle{
+      constructor(x,y, vx,vy, life, color){ this.x=x; this.y=y; this.vx=vx; this.vy=vy; this.life=life; this.alpha=1; this.color=color; this.gravity=0.04; }
+      step(){ this.life--; this.x+=this.vx; this.y+=this.vy; this.vy+=this.gravity; this.alpha = this.life/60; }
+      draw(){ sctx.globalAlpha = Math.max(this.alpha,0); sctx.beginPath(); sctx.arc(this.x,this.y,2,0,Math.PI*2); sctx.fillStyle=this.color; sctx.fill(); }
+    }
+    class Firework{
+      constructor(){
+        this.x = Math.random()*sky.width*0.9 + sky.width*0.05;
+        this.y = sky.height + 10;
+        this.vx = (Math.random()-.5)*1.2;
+        this.vy = -(6+Math.random()*3);
+        this.colorSet = ["#FF9933","#ffffff","#138808","#0a5bd7"]; // saffron, white, green, chakra
+        this.exploded = false; this.particles=[];
+      }
+      step(){
+        if(!this.exploded){
+          this.x += this.vx; this.y += this.vy; this.vy += 0.04; // gravity
+          if(this.vy >= -0.5){ this.explode(); }
+        }
+        this.particles.forEach(p=>p.step());
+        this.particles = this.particles.filter(p=>p.life>0);
+      }
+      draw(){
+        if(!this.exploded){ sctx.globalAlpha=1; sctx.fillStyle="#fff"; sctx.fillRect(this.x, this.y, 2, 2); }
+        this.particles.forEach(p=>p.draw());
+      }
+      explode(){
+        this.exploded = true;
+        const count = 60 + Math.floor(Math.random()*40);
+        const huePick = this.colorSet[Math.floor(Math.random()*this.colorSet.length)];
+        for(let i=0;i<count;i++){
+          const angle = (i/count) * Math.PI*2;
+          const speed = 2 + Math.random()*2.5;
+          const vx = Math.cos(angle)*speed*(.6+Math.random()*0.8);
+          const vy = Math.sin(angle)*speed*(.6+Math.random()*0.8);
+          this.particles.push(new Particle(this.x, this.y, vx, vy, 60, huePick));
+        }
+      }
+    }
+
+    let fireworks=[]; let fwTimer=0;
+    function loopFireworks(){
+      if(!fireworksEnabled){ sctx.clearRect(0,0,sky.width, sky.height); requestAnimationFrame(loopFireworks); return; }
+      sctx.fillStyle = 'rgba(6,8,15,0.28)';
+      sctx.fillRect(0,0,sky.width, sky.height); // trailing effect
+      if(fwTimer<=0){ fireworks.push(new Firework()); fwTimer = 18 + Math.random()*22; }
+      fwTimer--;
+      fireworks.forEach(fw=>{ fw.step(); fw.draw(); });
+      fireworks = fireworks.filter(fw=> fw.particles.length>0 || !fw.exploded);
+      requestAnimationFrame(loopFireworks);
+    }
+    loopFireworks();
+
+    // ===== Confetti Canvas =====
+    const confetti = document.getElementById('confetti');
+    const cctx = confetti.getContext('2d');
+    let confettiEnabled = false;
+
+    function sizeConfetti(){ confetti.width = innerWidth; confetti.height = innerHeight; }
+    addEventListener('resize', sizeConfetti); sizeConfetti();
+
+    const tri = ["#FF9933","#ffffff","#138808"]; // tricolour
+    const confs = [];
+    function spawnConfetti(n=160){
+      for(let i=0;i<n;i++){
+        confs.push({
+          x: Math.random()*confetti.width,
+          y: -10 - Math.random()*confetti.height,
+          w: 6+Math.random()*7,
+          h: 3+Math.random()*5,
+          r: Math.random()*Math.PI,
+          vr: (Math.random()-.5)*0.2,
+          vy: 1.2+Math.random()*2.2,
+          vx: (Math.random()-.5)*0.9,
+          col: tri[Math.floor(Math.random()*tri.length)]
+        });
+      }
+    }
+    function loopConfetti(){
+      cctx.clearRect(0,0,confetti.width, confetti.height);
+      if(confettiEnabled){
+        for(const p of confs){
+          p.x += p.vx; p.y += p.vy; p.r += p.vr;
+          if(p.y>confetti.height+20){ p.y = -10; p.x = Math.random()*confetti.width; }
+          cctx.save();
+          cctx.translate(p.x, p.y); cctx.rotate(p.r);
+          cctx.fillStyle = p.col; cctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+          cctx.restore();
+        }
+      }
+      requestAnimationFrame(loopConfetti);
+    }
+    loopConfetti();
+
+    // ===== Floating Kites =====
+    const kiteColors = ["#FF9933","#ffffff","#138808","#0a5bd7"];
+    function addKites(count=12){
+      for(let i=0;i<count;i++){
+        const k = document.createElement('div');
+        k.className = 'kite';
+        k.style.background = kiteColors[i%kiteColors.length];
+        k.style.left = Math.random()*100 + 'vw';
+        k.style.top = (70+Math.random()*30) + 'vh';
+        document.body.appendChild(k);
+        const drift = () => {
+          const startX = Math.random()*100; const dur = 12000 + Math.random()*10000;
+          k.animate([
+            { transform: `translate(0,0) rotate(45deg)` },
+            { transform: `translate(${(Math.random()*2-1)*60}px, -${60+Math.random()*120}px) rotate(45deg)` }
+          ], { duration: dur, iterations: Infinity, direction:'alternate', easing:'ease-in-out' });
+        };
+        drift();
+      }
+    }
+    addKites(10);
+
+    // ===== Buttons =====
+    const celebrateBtn = document.getElementById('celebrateBtn');
+    const toggleF = document.getElementById('toggleFireworks');
+    const toggleC = document.getElementById('toggleConfetti');
+
+    celebrateBtn.addEventListener('click', () => {
+      // Burst 3 quick fireworks
+      for(let i=0;i<3;i++) setTimeout(()=>fireworks.push(new Firework()), i*200);
+      // Shower confetti for a while
+      confettiEnabled = true; if(confs.length<220) spawnConfetti(220);
+      setTimeout(()=>{ confettiEnabled = true; }, 0);
+    });
+    toggleF.addEventListener('click', ()=>{ fireworksEnabled = !fireworksEnabled; if(fireworksEnabled) loopFireworks(); });
+    toggleC.addEventListener('click', ()=>{ confettiEnabled = !confettiEnabled; if(confettiEnabled && confs.length<180) spawnConfetti(180); });
+
+    // Auto start subtle effects
+    setTimeout(()=>{ fireworks.push(new Firework()); }, 800);
+  </script>
+</body>
+</html>
 # Auto detect text files and perform LF normalization
 * text=auto
